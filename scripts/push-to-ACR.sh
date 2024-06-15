@@ -11,9 +11,14 @@ if [[ ! -z "$existing_image" ]]
 then
     docker rmi $existing_image
 
-docker build -t $acr_url/frontend/frontend:latest ../code/frontend/
-docker build -t $acr_url/catalog/catalog:latest ../code/catalog/
-docker build -t $acr_url/ordering/ordering:latest ../code/ordering/
+docker build -t frontend ../code/frontend/ --no-cache
+docker tag frontend:latest $acr_url/frontend/frontend:latest
 docker push $acr_url/frontend/frontend:latest
+
+docker build -t catalog ../code/catalog/ --no-cache
+docker tag catalog:latest $acr_url/catalog/catalog:latest
 docker push $acr_url/catalog/catalog:latest
+
+docker build -t $acr_url/ordering/ordering:latest ../code/ordering/ --no-cache
+docker tag ordering:latest $acr_url/catalog/ordering:latest
 docker push $acr_url/ordering/ordering:latest
